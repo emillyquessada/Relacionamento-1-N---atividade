@@ -37,3 +37,19 @@ engine = create_engine("sqlite:///spotify.db")
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
+def adicionar_artista():
+    nome_artista = input("Digite o nome do artista para adicionar: ")
+    nascimento_artista = input("Digite a data de nascimento do artista: ")
+    with Session() as session:
+        try:
+            artista = Artista(nome=nome_artista, nascimento= nascimento_artista)
+            session.add(artista)
+            session.commit()
+            print("Artista adicionado!")
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+
+# adicionar_artista()
+
+
