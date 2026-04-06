@@ -38,18 +38,40 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
 def adicionar_artista():
-    nome_artista = input("Digite o nome do artista para adicionar: ")
-    nascimento_artista = input("Digite a data de nascimento do artista: ")
+    nome_artista = input("Digite o nome do artista para adicionar: ").strip().capitalize()
+    nascimento_artista = int(input("Digite a data de nascimento do artista: "))
     with Session() as session:
         try:
             artista = Artista(nome=nome_artista, nascimento= nascimento_artista)
             session.add(artista)
             session.commit()
-            print("Artista adicionado!")
+            print(f"Artista {nome_artista} adicionado!")
         except Exception as erro:
             session.rollback()
             print(f"Ocorreu um erro {erro}")
 
 # adicionar_artista()
+
+def adicionar_album():
+    nome_album = input("Digite o nome do álbum: ").strip().capitalize()
+    qtd_musicas = int(input("Digite a quantidade de músicas: "))
+    estilo = input("Digite o estilo do álbum: ").capitalize()
+    lancamento = int(input("Digite o ano de lançamento: "))
+    buscar_artista = input(f"Digite o nome do artista do álbum {nome_album}: ").strip().capitalize()
+    with Session() as session:
+        try:
+            artista = session.query(Artista).filter_by(nome=buscar_artista).first()
+            if artista == None:
+                print(f"Artista {buscar_artista} não encontrado!")
+            else:
+                album = Album(nome_album=nome_album, musicas=qtd_musicas, estilo=estilo, lancamento=lancamento)
+                session.add(album)
+                session.commit()
+                print(f"Álbum {nome_album} adicionado com sucesso!")
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+
+# adicionar_album()
 
 
