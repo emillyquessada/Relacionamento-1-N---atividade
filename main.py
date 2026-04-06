@@ -6,14 +6,14 @@ Base = declarative_base()
 class Artista(Base):
     __tablename__ = "artistas"
 
-    id_artista = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100), nullable=False)
     nascimento = Column(Integer)
 
     albuns = relationship("Album", back_populates="artista")
 
     def __repr__(self):
-        return f"Artista: ID = {self.id_artista} | Nome = {self.nome} | Ano Nascimento = {self.nascimento}"
+        return f"Artista: ID = {self.id} | Nome = {self.nome} | Ano Nascimento = {self.nascimento}"
     
 class Album(Base):
     __tablename__= "albuns"
@@ -24,7 +24,7 @@ class Album(Base):
     estilo = Column(String(100))
     lancamento = Column(Integer, nullable=False)
 
-    artista_id = Column(Integer, ForeignKey("artistas.id_artista"))
+    artista_id = Column(Integer, ForeignKey("artistas.id"))
 
     artista = relationship("Artista", back_populates="albuns")
 
@@ -74,4 +74,15 @@ def adicionar_album():
 
 # adicionar_album()
 
-
+def listar():
+    with Session() as session:
+        try:
+            artistas = session.query(Artista).all()
+            for i in artistas:
+                print(f"\n{i}")
+                for a in i.albuns:
+                    print(a) 
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+listar()
