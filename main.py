@@ -85,4 +85,20 @@ def listar():
         except Exception as erro:
             session.rollback()
             print(f"Ocorreu um erro {erro}")
-listar()
+# listar()
+
+def listar_artista():
+    buscar_artista = input(f"Digite o nome do artista: ").strip().capitalize()
+    with Session() as session:
+        try:
+            artista = session.query(Artista).filter_by(nome=buscar_artista).first()
+            if artista == None:
+                print(f"Artista {buscar_artista} não encontrado!")
+            else:
+                for i in artista.albuns:
+                    print(f"\n{i}")
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+
+# listar_artista()
