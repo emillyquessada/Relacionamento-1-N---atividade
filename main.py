@@ -134,4 +134,33 @@ def atualizar_artista():
             session.rollback()
             print(f"Ocorreu um erro {erro}")
 
-atualizar_artista()
+# atualizar_artista()
+
+def atualizar_album():
+    buscar_album = input(f"Digite o nome do álbum que deseja atualizar: ").strip().capitalize()
+    with Session() as session:
+        try:
+            album = session.query(Artista).filter_by(nome=buscar_album).first()
+            if album == None:
+                print(f"Álbum {buscar_album} não encontrado!")
+            else:
+                nome_album = input("Digite o nome do álbum: ").strip().capitalize()
+                qtd_musicas = int(input("Digite a quantidade de músicas: "))
+                estilo = input("Digite o estilo do álbum: ").capitalize()
+                lancamento = int(input("Digite o ano de lançamento: "))
+                escolha = input("Você quer mudar o artista do álbum? (S ou N)").capitalize().strip()
+                if escolha == "S":
+                    buscar_artista = input(f"Digite o nome do artista que deseja atualizar: ").strip().capitalize()
+                    artista = session.query(Artista).filter_by(nome=buscar_artista).first()
+                    if artista == None:
+                        print(f"Artista {buscar_artista} não encontrado!")
+                    else:
+                        pass
+                else:
+                    album.nome_album, album.musicas, album.musicas, album.lancamento = nome_album, qtd_musicas, estilo, lancamento
+                    session.commit()
+                    print(f"Álbum {buscar_album} atualizado!")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
