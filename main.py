@@ -114,4 +114,24 @@ def listar_validos():
         except Exception as erro:
             session.rollback()
             print(f"Ocorreu um erro {erro}")
-listar_validos()
+# listar_validos()
+
+def atualizar_artista():
+    buscar_artista = input(f"Digite o nome do artista que deseja atualizar: ").strip().capitalize()
+    with Session() as session:
+        try:
+            artista = session.query(Artista).filter_by(nome=buscar_artista).first()
+            if artista == None:
+                print(f"Artista {buscar_artista} não encontrado!")
+            else:
+                nome_artista = input("Digite o nome do artista para adicionar: ").strip().capitalize()
+                nascimento_artista = int(input("Digite a data de nascimento do artista: "))
+                artista.nome, artista.nascimento = nome_artista, nascimento_artista
+                session.commit()
+                print(f"Artista {buscar_artista} atualizado!")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+
+atualizar_artista()
