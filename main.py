@@ -102,3 +102,16 @@ def listar_artista():
             print(f"Ocorreu um erro {erro}")
 
 # listar_artista()
+
+def listar_validos():
+    with Session() as session:
+        try:
+            artistas = session.query(Artista).filter(Artista.albuns != None).all()
+            for i in artistas:
+                print(f"\n{i}")
+                for a in i.albuns:
+                    print(a) 
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro {erro}")
+listar_validos()
