@@ -64,7 +64,7 @@ def adicionar_album():
             if artista == None:
                 print(f"Artista {buscar_artista} não encontrado!")
             else:
-                album = Album(nome_album=nome_album, musicas=qtd_musicas, estilo=estilo, lancamento=lancamento)
+                album = Album(nome_album=nome_album, musicas=qtd_musicas, estilo=estilo, lancamento=lancamento,artista=artista)
                 session.add(album)
                 session.commit()
                 print(f"Álbum {nome_album} adicionado com sucesso!")
